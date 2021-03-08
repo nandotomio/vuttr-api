@@ -32,4 +32,11 @@ describe('DbAuthentication UseCase', () => {
     const promise = sut.auth(mockAuthenticationParams())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if LoadAccountByEmailRepository returns null', async () => {
+    const { sut, loadAccountByEmailRepositorySpy } = makeSut()
+    loadAccountByEmailRepositorySpy.result = null
+    const model = await sut.auth(mockAuthenticationParams())
+    expect(model).toBeNull()
+  })
 })
