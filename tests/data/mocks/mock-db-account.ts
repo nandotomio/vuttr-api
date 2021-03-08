@@ -1,9 +1,11 @@
 import { AddAccountRepository, CheckAccountByEmailRepository } from '@/data/protocols'
 
 export class AddAccountRepositorySpy implements AddAccountRepository {
+  callsCount = 0
   params: AddAccountRepository.Params
 
   async add (params: AddAccountRepository.Params): Promise<void> {
+    this.callsCount++
     this.params = params
   }
 }

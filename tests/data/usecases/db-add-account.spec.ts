@@ -69,6 +69,14 @@ describe('DbAddAccount Usecase', () => {
     await expect(promise).rejects.toThrow()
   })
 
+  test('Should not call AddAccountRepository if CheckAccountByEmailRepository fails', async () => {
+    const { sut, checkAccountByEmailRepositorySpy, addAccountRepositorySpy } = makeSut()
+    jest.spyOn(checkAccountByEmailRepositorySpy, 'checkByEmail').mockImplementationOnce(throwError)
+    const promise = sut.add(mockAddAccountParams())
+    await expect(promise).rejects.toThrow()
+    expect(addAccountRepositorySpy.callsCount).toBe(0)
+  })
+
   test('Should resolve on success', async () => {
     const { sut } = makeSut()
     const promise = sut.add(mockAddAccountParams())
