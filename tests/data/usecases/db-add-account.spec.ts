@@ -1,5 +1,5 @@
 import { DbAddAccount } from '@/data/usecases'
-import { mockAddAccountParams } from '@/tests/domain/mocks'
+import { mockAddAccountParams, throwError } from '@/tests/domain/mocks'
 import { HasherSpy } from '@/tests/data/mocks'
 
 type SutTypes = {
@@ -22,5 +22,12 @@ describe('DbAddAccount Usecase', () => {
     const addAccountParams = mockAddAccountParams()
     await sut.add(addAccountParams)
     expect(hasherSpy.plaintext).toBe(addAccountParams.password)
+  })
+
+  test('Should throw if Hasher throws', async () => {
+    const { sut, hasherSpy } = makeSut()
+    jest.spyOn(hasherSpy, 'hash').mockImplementationOnce(throwError)
+    const promise = sut.add(mockAddAccountParams())
+    await expect(promise).rejects.toThrow()
   })
 })
