@@ -58,4 +58,11 @@ describe('DbAuthentication UseCase', () => {
     const promise = sut.auth(mockAuthenticationParams())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should return null if HashComparer returns false', async () => {
+    const { sut, hashComparerSpy } = makeSut()
+    hashComparerSpy.isValid = false
+    const model = await sut.auth(mockAuthenticationParams())
+    expect(model).toBeNull()
+  })
 })
