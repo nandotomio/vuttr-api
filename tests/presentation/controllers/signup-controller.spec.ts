@@ -1,7 +1,7 @@
 import { EmailInUseError } from '@/domain/errors'
 import { SignUpController } from '@/presentation/controllers'
 import { MissingParamError, ServerError } from '@/presentation/errors'
-import { badRequest, forbidden, serverError } from '@/presentation/helpers'
+import { badRequest, forbidden, ok, serverError } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
 import { ValidationSpy, AddAccountSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
 
@@ -106,5 +106,11 @@ describe('SignUp Controller', () => {
     jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(new EmailInUseError())
     await sut.handle(mockRequest())
     expect(authenticationSpy.callsCount).toBe(0)
+  })
+
+  test('Should return 200 if valid data is provided', async () => {
+    const { sut, authenticationSpy } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(ok(authenticationSpy.result))
   })
 })
