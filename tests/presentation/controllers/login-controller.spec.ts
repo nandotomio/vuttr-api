@@ -1,5 +1,5 @@
 import { LoginController } from '@/presentation/controllers'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, unauthorized } from '@/presentation/helpers'
 import { MissingParamError } from '@/presentation/errors'
 import { ValidationSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
 
@@ -50,5 +50,12 @@ describe('Login Controller', () => {
       email: request.email,
       password: request.password
     })
+  })
+
+  test('Should return 401 if invalid credentials are provided', async () => {
+    const { sut, authenticationSpy } = makeSut()
+    authenticationSpy.result = null
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(unauthorized())
   })
 })
