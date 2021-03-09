@@ -4,6 +4,7 @@ import { mockAddAccountParams } from '@/tests/domain/mocks'
 import { EmailInUseError } from '@/domain/errors'
 
 import { Connection, createConnection, MongoRepository } from 'typeorm'
+import faker from 'faker'
 
 const makeSut = (): AccountMongoRepository => {
   return new AccountMongoRepository()
@@ -70,6 +71,12 @@ describe('AccountMongoRepository', () => {
       expect(account.id).toBeTruthy()
       expect(account.name).toBe(addAccountParams.name)
       expect(account.password).toBe(addAccountParams.password)
+    })
+
+    test('Should return null if loadByEmail fails', async () => {
+      const sut = makeSut()
+      const account = await sut.loadByEmail(faker.internet.email())
+      expect(account).toBeFalsy()
     })
   })
 })
