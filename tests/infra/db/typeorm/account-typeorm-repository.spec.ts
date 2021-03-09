@@ -1,6 +1,7 @@
 import { ormConfig } from './helpers'
 import { AccountMongoRepository, AccountTypeormEntity } from '@/infra/db'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
+import { EmailInUseError } from '@/domain/errors'
 
 import { Connection, createConnection, MongoRepository } from 'typeorm'
 
@@ -39,6 +40,16 @@ describe('AccountMongoRepository', () => {
       const addAccountParams = mockAddAccountParams()
       const promise = sut.add(addAccountParams)
       await expect(promise).resolves.toBeUndefined()
+    })
+  })
+
+  describe('checkByEmail()', () => {
+    test('Should throw EmailInUseError if email already in use', async () => {
+      const sut = makeSut()
+      const addAccountParams = mockAddAccountParams()
+      await accountRepository.insertOne(addAccountParams)
+      const promise = sut.checkByEmail(addAccountParams.email)
+      await expect(promise).rejects.toThrow(EmailInUseError)
     })
   })
 })
