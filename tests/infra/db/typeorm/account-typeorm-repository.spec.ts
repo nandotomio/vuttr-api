@@ -33,5 +33,12 @@ describe('AccountMongoRepository', () => {
       const count = await accountRepository.count({ email: addAccountParams.email })
       expect(count).toBe(1)
     })
+
+    test('Should resolve on success', async () => {
+      const sut = makeSut()
+      const addAccountParams = mockAddAccountParams()
+      const promise = sut.add(addAccountParams)
+      await expect(promise).resolves.toBeUndefined()
+    })
   })
 })
