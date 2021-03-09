@@ -1,6 +1,7 @@
+import { EmailInUseError } from '@/domain/errors'
 import { SignUpController } from '@/presentation/controllers'
 import { MissingParamError } from '@/presentation/errors'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, forbidden } from '@/presentation/helpers'
 import { ValidationSpy, AddAccountSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
@@ -56,5 +57,12 @@ describe('SignUp Controller', () => {
       email: request.email,
       password: request.password
     })
+  })
+
+  test('Should return 403 if AddAccount throw EmailInUseError', async () => {
+    const { sut, addAccountSpy } = makeSut()
+    jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(new EmailInUseError())
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(forbidden(new EmailInUseError()))
   })
 })
