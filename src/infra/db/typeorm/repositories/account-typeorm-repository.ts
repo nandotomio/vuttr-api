@@ -21,7 +21,12 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
   }
 
   async loadByEmail (email: string): Promise<LoadAccountByEmailRepository.Result> {
-    const account = await this.ormRepository.findOne({ email })
+    const account = await this.ormRepository.findOne({ email }, {
+      select: ['id', 'name', 'password']
+    })
+    if (!account) {
+      return null
+    }
     return {
       id: account.id.toString(),
       name: account.name,
