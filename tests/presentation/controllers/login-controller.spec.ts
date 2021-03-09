@@ -53,6 +53,13 @@ describe('Login Controller', () => {
     })
   })
 
+  test('Should not call Authentication if Validation fails', async () => {
+    const { sut, validationSpy, authenticationSpy } = makeSut()
+    validationSpy.error = new MissingParamError(faker.random.word())
+    await sut.handle(mockRequest())
+    expect(authenticationSpy.callsCount).toBe(0)
+  })
+
   test('Should return 401 if invalid credentials are provided', async () => {
     const { sut, authenticationSpy } = makeSut()
     authenticationSpy.result = null
