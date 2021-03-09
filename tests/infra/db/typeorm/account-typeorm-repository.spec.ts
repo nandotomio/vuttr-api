@@ -59,4 +59,17 @@ describe('AccountMongoRepository', () => {
       await expect(promise).resolves.toBeUndefined()
     })
   })
+
+  describe('loadByEmail()', () => {
+    test('Should return an account on success', async () => {
+      const sut = makeSut()
+      const addAccountParams = mockAddAccountParams()
+      await accountRepository.insertOne(addAccountParams)
+      const account = await sut.loadByEmail(addAccountParams.email)
+      expect(account).toBeTruthy()
+      expect(account.id).toBeTruthy()
+      expect(account.name).toBe(addAccountParams.name)
+      expect(account.password).toBe(addAccountParams.password)
+    })
+  })
 })
