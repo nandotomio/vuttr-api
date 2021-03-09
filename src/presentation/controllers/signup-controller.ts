@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden } from '@/presentation/helpers'
+import { badRequest, forbidden, serverError } from '@/presentation/helpers'
 import { AddAccount } from '@/domain/usecases'
 
 import { EmailInUseError } from '@/domain/errors'
@@ -24,10 +24,10 @@ export class SignUpController implements Controller {
       })
       return null
     } catch (error) {
-      switch (error.constructor) {
-        case EmailInUseError: return forbidden(error)
-        default: return error
+      if (error instanceof EmailInUseError) {
+        return forbidden(error)
       }
+      return serverError(error)
     }
   }
 }
