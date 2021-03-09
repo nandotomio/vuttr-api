@@ -14,6 +14,9 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
   }
 
   async checkByEmail (email: string): Promise<void> {
-    throw new EmailInUseError()
+    const account = await this.ormRepository.findOne({ email })
+    if (account) {
+      throw new EmailInUseError()
+    }
   }
 }
