@@ -1,10 +1,10 @@
-import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository } from '@/data/protocols/db'
+import { AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository } from '@/data/protocols/db'
 import { AccountTypeormEntity } from '@/infra/db'
 import { EmailInUseError } from '@/domain/errors'
 
 import { getMongoRepository } from 'typeorm'
 
-export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository {
+export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
   constructor (
     private readonly ormRepository = getMongoRepository(AccountTypeormEntity)
   ) {}
@@ -32,5 +32,15 @@ export class AccountMongoRepository implements AddAccountRepository, CheckAccoun
       name: account.name,
       password: account.password
     }
+  }
+
+  async updateAccessToken (id: string, token: string): Promise<void> {
+    await this.ormRepository.updateOne({
+      id
+    }, {
+      $set: {
+        accessToken: token
+      }
+    })
   }
 }

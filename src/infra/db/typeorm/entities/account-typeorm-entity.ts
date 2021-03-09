@@ -16,6 +16,9 @@ export class AccountTypeormEntity implements AddAccount.Params {
   @Column()
   password: string
 
+  @Column()
+  accessToken?: string
+
   @CreateDateColumn()
   createdAt: Date
 
