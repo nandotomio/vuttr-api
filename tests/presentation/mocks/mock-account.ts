@@ -13,6 +13,7 @@ export class AddAccountSpy implements AddAccount {
 }
 
 export class AuthenticationSpy implements Authentication {
+  callsCount = 0
   params: Authentication.Params
   result = {
     accessToken: faker.random.uuid(),
@@ -20,6 +21,7 @@ export class AuthenticationSpy implements Authentication {
   }
 
   async auth (params: Authentication.Params): Promise<Authentication.Result> {
+    this.callsCount++
     this.params = params
     return this.result
   }

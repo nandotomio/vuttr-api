@@ -100,4 +100,11 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new Error()))
   })
+
+  test('Should not call Authentication if AddAccount fails', async () => {
+    const { sut, addAccountSpy, authenticationSpy } = makeSut()
+    jest.spyOn(addAccountSpy, 'add').mockRejectedValueOnce(new EmailInUseError())
+    await sut.handle(mockRequest())
+    expect(authenticationSpy.callsCount).toBe(0)
+  })
 })
