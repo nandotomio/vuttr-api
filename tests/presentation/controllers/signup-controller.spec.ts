@@ -3,7 +3,7 @@ import { SignUpController } from '@/presentation/controllers'
 import { MissingParamError, ServerError } from '@/presentation/errors'
 import { badRequest, forbidden, serverError } from '@/presentation/helpers'
 import { throwError } from '@/tests/domain/mocks'
-import { ValidationSpy, AddAccountSpy } from '@/tests/presentation/mocks'
+import { ValidationSpy, AddAccountSpy, AuthenticationSpy } from '@/tests/presentation/mocks'
 
 import faker from 'faker'
 
@@ -21,16 +21,19 @@ type SutTypes = {
   sut: SignUpController
   validationSpy: ValidationSpy
   addAccountSpy: AddAccountSpy
+  authenticationSpy: AuthenticationSpy
 }
 
 const makeSut = (): SutTypes => {
   const validationSpy = new ValidationSpy()
   const addAccountSpy = new AddAccountSpy()
-  const sut = new SignUpController(validationSpy, addAccountSpy)
+  const authenticationSpy = new AuthenticationSpy()
+  const sut = new SignUpController(validationSpy, addAccountSpy, authenticationSpy)
   return {
     sut,
     validationSpy,
-    addAccountSpy
+    addAccountSpy,
+    authenticationSpy
   }
 }
 
@@ -79,5 +82,15 @@ describe('SignUp Controller', () => {
     validationSpy.error = new MissingParamError(faker.random.word())
     await sut.handle(mockRequest())
     expect(addAccountSpy.callsCount).toBe(0)
+  })
+
+  test('Should call Authentication with correct values', async () => {
+    const { sut, authenticationSpy } = makeSut()
+    const request = mockRequest()
+    await sut.handle(request)
+    expect(authenticationSpy.params).toEqual({
+      email: request.email,
+      password: request.password
+    })
   })
 })
