@@ -51,5 +51,12 @@ describe('AccountMongoRepository', () => {
       const promise = sut.checkByEmail(addAccountParams.email)
       await expect(promise).rejects.toThrow(EmailInUseError)
     })
+
+    test('Should resolve if email is valid', async () => {
+      const sut = makeSut()
+      const addAccountParams = mockAddAccountParams()
+      const promise = sut.checkByEmail(addAccountParams.email)
+      await expect(promise).resolves.toBeUndefined()
+    })
   })
 })
