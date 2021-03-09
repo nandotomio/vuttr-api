@@ -73,4 +73,11 @@ describe('SignUp Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
+
+  test('Should not call AddAccount if Validation fails', async () => {
+    const { sut, validationSpy, addAccountSpy } = makeSut()
+    validationSpy.error = new MissingParamError(faker.random.word())
+    await sut.handle(mockRequest())
+    expect(addAccountSpy.callsCount).toBe(0)
+  })
 })
