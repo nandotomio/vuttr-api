@@ -7,6 +7,6 @@ import { createConnection } from 'typeorm'
 createConnection()
   .then(async () => {
     const app = (await import('./config/app')).default
-    app.listen(env.port, () => console.log(`Server running at http://localhost:${env.port}`))
+    app.listen(env.apiPort, () => console.log(`Server running at http://localhost:${env.apiPort}`))
   })
   .catch(console.error)

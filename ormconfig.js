@@ -1,6 +1,6 @@
 require('dotenv').config()
 
-const appDir = process.env.NODE_ENV === 'PROD' ? 'dist' : 'src'
+const appDir = process.env.NODE_ENV === 'production' ? 'dist' : 'src'
 
 module.exports = {
   type: 'mongodb',
