@@ -4,6 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "type-check": "tsc --noEmit",
+    "type-check:watch": "npm run type-check -- --watch",
     "start": "node dist/main/server.js",
     "build": "rimraf dist && tsc -p tsconfig-build.json",
     "build:watch": "rimraf dist && tsc -p tsconfig-build.json -w",
@@ -53,7 +55,7 @@
     "validator": "^13.5.2"
   },
   "engines": {
-    "node": "12.x"
+    "node": "14.x"
   },
   "_moduleAliases": {
     "@": "dist"

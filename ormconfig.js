@@ -1,7 +1,5 @@
 require('dotenv').config()
 
-const appDir = process.env.NODE_ENV === 'production' ? 'dist' : 'src'
-
 module.exports = {
   type: 'mongodb',
   host: process.env.MONGODB_HOST,
@@ -12,6 +10,6 @@ module.exports = {
   useUnifiedTopology: true,
   synchronize: true,
   entities: [
-    `./${appDir}/infra/db/typeorm/entities/*{.ts,.js}`
+    './dist/infra/db/typeorm/entities/*.js'
   ]
 }

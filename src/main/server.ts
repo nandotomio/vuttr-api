@@ -1,6 +1,6 @@
+import 'module-alias/register'
 import 'reflect-metadata'
 import 'dotenv/config'
-import 'module-alias/register'
 import env from '@/main/config/env'
 import { createConnection } from 'typeorm'
 
