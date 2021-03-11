@@ -5,6 +5,7 @@ import { AccountTypeormEntity } from '@/infra/db'
 import { Connection, MongoRepository } from 'typeorm'
 import { Application } from 'express'
 import request from 'supertest'
+import { hash } from 'bcrypt'
 
 const sut = new ApiServer()
 let app: Application
@@ -42,6 +43,24 @@ describe('Login Routes', () => {
         .post('/api/signup')
         .send(fakeRequest)
         .expect(403)
+    })
+  })
+
+  describe('POST /login', () => {
+    test('Should return 200 on login', async () => {
+      const addAccountParams = mockAddAccountParams()
+      const hashedPassword = await hash(addAccountParams.password, 12)
+      await accountRepository.insertOne({
+        ...addAccountParams,
+        password: hashedPassword
+      })
+      await request(app)
+        .post('/api/login')
+        .send({
+          email: addAccountParams.email,
+          password: addAccountParams.password
+        })
+        .expect(200)
     })
   })
 })
