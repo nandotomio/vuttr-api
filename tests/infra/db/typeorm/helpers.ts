@@ -1,5 +1,3 @@
-import 'dotenv'
-
 import { ConnectionOptions } from 'typeorm'
 
 export const ormConfig: ConnectionOptions = {
