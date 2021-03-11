@@ -1,7 +1,8 @@
-import { makeDbAuthentication, makeSignUpValidation, makeDbAddAccount } from '@/main/factories'
+import { makeDbAuthentication, makeSignUpValidation, makeDbAddAccount, makeLogControllerDecorator } from '@/main/factories'
 import { SignUpController } from '@/presentation/controllers'
 import { Controller } from '@/presentation/protocols'
 
 export const makeSignUpController = (): Controller => {
-  return new SignUpController(makeSignUpValidation(), makeDbAddAccount(), makeDbAuthentication())
+  const controller = new SignUpController(makeSignUpValidation(), makeDbAddAccount(), makeDbAuthentication())
+  return makeLogControllerDecorator(controller)
 }
