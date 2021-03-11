@@ -1,11 +1,14 @@
 import request from 'supertest'
 import { ApiServer } from '@/tests/main/helper'
+import { Application } from 'express'
 
 const sut = new ApiServer()
+let app: Application
 
 describe('Body Parser Middleware', () => {
   beforeAll(async () => {
     await sut.init()
+    app = sut.getApp()
   })
 
   afterAll(async () => {
@@ -13,10 +16,10 @@ describe('Body Parser Middleware', () => {
   })
 
   test('Should parse body as json', async () => {
-    sut.getApp().post('/test_body_parser', (req, res) => {
+    app.post('/test_body_parser', (req, res) => {
       res.send(req.body)
     })
-    await request(sut.getApp())
+    await request(app)
       .post('/test_body_parser')
       .send({ name: 'Rodrigo' })
       .expect({ name: 'Rodrigo' })
