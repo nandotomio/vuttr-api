@@ -4,7 +4,7 @@ import { EmailInUseError } from '@/domain/errors'
 
 import { getMongoRepository } from 'typeorm'
 
-export class AccountMongoRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
+export class AccountTypeormRepository implements AddAccountRepository, CheckAccountByEmailRepository, LoadAccountByEmailRepository, UpdateAccessTokenRepository {
   constructor (
     private readonly ormRepository = getMongoRepository(AccountTypeormEntity)
   ) {}

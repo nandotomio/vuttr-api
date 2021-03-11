@@ -1,19 +1,19 @@
 import { ormConfig } from './helpers'
-import { AccountMongoRepository, AccountTypeormEntity } from '@/infra/db'
+import { AccountTypeormRepository, AccountTypeormEntity } from '@/infra/db'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 import { EmailInUseError } from '@/domain/errors'
 
 import { Connection, createConnection, MongoRepository } from 'typeorm'
 import faker from 'faker'
 
-const makeSut = (): AccountMongoRepository => {
-  return new AccountMongoRepository()
+const makeSut = (): AccountTypeormRepository => {
+  return new AccountTypeormRepository()
 }
 
 let dbConnection: Connection
 let accountRepository: MongoRepository<AccountTypeormEntity>
 
-describe('AccountMongoRepository', () => {
+describe('AccountTypeormRepository', () => {
   beforeAll(async () => {
     dbConnection = await createConnection(ormConfig)
   })
