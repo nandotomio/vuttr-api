@@ -1,0 +1,43 @@
+version: "3.7"
+
+networks:
+  app-connect:
+      driver: bridge
+
+services:
+  mongodb-master:
+    image: bitnami/mongodb:4.4
+    container_name: mongodb-master
+    restart: unless-stopped
+    volumes:
+      - mongodb-data:/bitnami/mongodb
+    environment:
+      MONGODB_DATABASE: ${MONGODB_DATABASE}
+      MONGODB_USERNAME: ${MONGODB_USERNAME}
+      MONGODB_PASSWORD: ${MONGODB_PASSWORD}
+    networks:
+      - app-connect
+    ports:
+      - ${MONGODB_PORT}:27017
+
+  api:
+    container_name: api-container
+    image: node:14
+    working_dir: /usr/src/vuttr-api
+    restart: unless-stopped
+    depends_on:
+      - mongodb-master
+    command: bash -c "npm install --only=prod && npm run debug"
+    volumes:
+      - ./dist/:/usr/src/vuttr-api/dist/
+      - ./package.json:/usr/src/vuttr-api/package.json
+      - ./ormconfig.js:/usr/src/vuttr-api/ormconfig.js
+      - ./.env:/usr/src/vuttr-api/.env
+    networks:
+      - app-connect
+    ports:
+      - ${API_PORT}:${API_PORT}
+      - 9222:9222
+
+volumes:
+  mongodb-data:
