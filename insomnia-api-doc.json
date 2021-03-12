@@ -1,0 +1,139 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2021-03-12T20:00:58.439Z",
+  "__export_source": "insomnia.desktop.app:v2021.1.1",
+  "resources": [
+    {
+      "_id": "req_d2a5cbc5aafb42a48d1c35a50cc708c0",
+      "parentId": "fld_4ca3a95a29364371b6737c593bb15825",
+      "modified": 1615578929056,
+      "created": 1615403703233,
+      "url": "{{ _.baseUrl }}/signup",
+      "name": "Signup",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"name\": \"Fernando\",\n\t\"email\": \"nandotomio@gmail.com\",\n\t\"password\": \"123\",\n\t\"passwordConfirmation\": \"123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_b33017571f4846aeb6723c8f2a58b416"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1615403703233,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_4ca3a95a29364371b6737c593bb15825",
+      "parentId": "wrk_ab8b83c0459a4343ab49925ba97eab84",
+      "modified": 1615403687175,
+      "created": 1615403687175,
+      "name": "Account",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1615403687176,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_ab8b83c0459a4343ab49925ba97eab84",
+      "parentId": null,
+      "modified": 1615403609321,
+      "created": 1615403609321,
+      "name": "VUTTR-API",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "req_a60b3cf126464d2484277a99c176aa7f",
+      "parentId": "fld_4ca3a95a29364371b6737c593bb15825",
+      "modified": 1615578995322,
+      "created": 1615578914638,
+      "url": "{{ _.baseUrl }}/login",
+      "name": "Login",
+      "description": "",
+      "method": "POST",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n\t\"email\": \"nandotomio@gmail.com\",\n\t\"password\": \"123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json",
+          "id": "pair_b33017571f4846aeb6723c8f2a58b416"
+        }
+      ],
+      "authentication": {},
+      "metaSortKey": -1615135942602,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "env_79406593cb1bf9296525b6343537418acd4356f1",
+      "parentId": "wrk_ab8b83c0459a4343ab49925ba97eab84",
+      "modified": 1615403623930,
+      "created": 1615403609621,
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": {},
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1615403609621,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_79406593cb1bf9296525b6343537418acd4356f1",
+      "parentId": "wrk_ab8b83c0459a4343ab49925ba97eab84",
+      "modified": 1615403609624,
+      "created": 1615403609624,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "spc_938aa4c484ce4c6298c7011155f6bab3",
+      "parentId": "wrk_ab8b83c0459a4343ab49925ba97eab84",
+      "modified": 1615403609329,
+      "created": 1615403609329,
+      "fileName": "VUTTR-API",
+      "contents": "",
+      "contentType": "yaml",
+      "_type": "api_spec"
+    },
+    {
+      "_id": "env_8abcdfe534354220883e2a0d068a232b",
+      "parentId": "env_79406593cb1bf9296525b6343537418acd4356f1",
+      "modified": 1615403828297,
+      "created": 1615403628809,
+      "name": "DEV",
+      "data": { "baseUrl": "http://localhost:3000/api" },
+      "dataPropertyOrder": { "&": ["baseUrl"] },
+      "color": "#fff700",
+      "isPrivate": false,
+      "metaSortKey": 1615403628809,
+      "_type": "environment"
+    }
+  ]
+}
