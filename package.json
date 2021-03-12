@@ -1,7 +1,7 @@
 {
   "name": "vuttr-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "VUTTR (Very Useful Tools to Remember) - NodeJs Rest API and GraphQL using TDD, Clean Architecture, Typescript and Design Patterns",
   "scripts": {
     "type-check": "tsc --noEmit",
     "type-check:watch": "npm run type-check -- --watch",
@@ -19,8 +19,8 @@
     "test:ci": "npm test -- --coverage"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Fernando Tomio",
+  "license": "MIT",
   "devDependencies": {
     "@shelf/jest-mongodb": "^1.2.3",
     "@types/bcrypt": "^3.0.0",
