@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  db-postgresql-test:
+    image: bitnami/postgresql:12
+    restart: unless-stopped
+    volumes:
+      - db_postgresql_data_test:/bitnami/postgresql
+    environment:
+      POSTGRESQL_DATABASE: vuttr-test
+      POSTGRESQL_PASSWORD: postgres
+    ports:
+      - 65432:5432
+
+volumes:
+  db_postgresql_data_test:

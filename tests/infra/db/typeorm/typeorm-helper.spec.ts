@@ -1,24 +1,26 @@
-import { ormConfig } from './helpers'
+import { ormConnection } from './helpers'
 import { AccountTypeormEntity } from '@/infra/db'
 
-import { Connection, getMongoRepository, createConnection } from 'typeorm'
+import { getRepository } from 'typeorm'
 
 describe('Typeorm Helper', () => {
-  let db: Connection
-
   beforeAll(async () => {
-    db = await createConnection(ormConfig)
+    await ormConnection.create()
   })
 
   afterAll(async () => {
-    await db.close()
+    await ormConnection.close()
+  })
+
+  beforeEach(async () => {
+    await ormConnection.clear()
   })
 
   test('Should reconnect if database is down', async () => {
-    let accountRepository = getMongoRepository(AccountTypeormEntity)
+    let accountRepository = getRepository(AccountTypeormEntity)
     expect(accountRepository).toBeTruthy()
-    await db.close()
-    accountRepository = getMongoRepository(AccountTypeormEntity)
+    await ormConnection.close()
+    accountRepository = getRepository(AccountTypeormEntity)
     expect(accountRepository).toBeTruthy()
   })
 })

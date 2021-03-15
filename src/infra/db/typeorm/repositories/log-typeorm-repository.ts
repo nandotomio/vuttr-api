@@ -1,16 +1,17 @@
 import { LogErrorRepository } from '@/data/protocols/db'
 import { LogTypeormEntity } from '@/infra/db'
 
-import { getMongoRepository } from 'typeorm'
+import { getRepository } from 'typeorm'
 
 export class LogTypeormRepository implements LogErrorRepository {
   constructor (
-    private readonly ormRepository = getMongoRepository(LogTypeormEntity)
+    private readonly ormRepository = getRepository(LogTypeormEntity)
   ) {}
 
   async logError (stack: string): Promise<void> {
-    await this.ormRepository.insertOne({
+    const log = this.ormRepository.create({
       stack
     })
+    await this.ormRepository.save(log)
   }
 }

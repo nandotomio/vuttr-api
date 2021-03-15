@@ -1,29 +1,28 @@
-import { ormConfig } from './helpers'
+import { ormConnection } from './helpers'
 
 import { LogTypeormRepository, LogTypeormEntity } from '@/infra/db'
 
-import { Connection, createConnection, MongoRepository } from 'typeorm'
+import { Repository, getRepository } from 'typeorm'
 import faker from 'faker'
 
 const makeSut = (): LogTypeormRepository => {
   return new LogTypeormRepository()
 }
 
-let dbConnection: Connection
-let errorRepository: MongoRepository<LogTypeormEntity>
+let errorRepository: Repository<LogTypeormEntity>
 
 describe('LogTypeormRepository', () => {
   beforeAll(async () => {
-    dbConnection = await createConnection(ormConfig)
+    await ormConnection.create()
   })
 
   afterAll(async () => {
-    await dbConnection.close()
+    await ormConnection.close()
   })
 
   beforeEach(async () => {
-    errorRepository = dbConnection.getMongoRepository(LogTypeormEntity)
-    await errorRepository.deleteMany({})
+    errorRepository = getRepository(LogTypeormEntity)
+    await ormConnection.clear()
   })
 
   test('Should create an error log on success', async () => {

@@ -4,7 +4,7 @@ import 'dotenv/config'
 
 import env from '@/main/config/env'
 import makeApp from '@/main/config/app'
-import { ormConfig } from '@/tests/infra/db/typeorm/helpers'
+import { ormConfig } from '@/main/config/typeorm'
 
 import { createConnection, Connection } from 'typeorm'
 
@@ -29,7 +29,7 @@ export class ApiServer {
   }
 
   public async init (): Promise<void> {
-    this.dbConnection = await createConnection(ormConfig)
+    this.dbConnection = await createConnection(await ormConfig())
     this.app = makeApp()
     this.server = this.app.listen(env.apiPort)
   }

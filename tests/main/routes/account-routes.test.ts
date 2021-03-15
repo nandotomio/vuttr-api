@@ -2,7 +2,7 @@ import { ApiServer } from '@/tests/main/helper'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 import { AccountTypeormEntity } from '@/infra/db'
 
-import { Connection, MongoRepository } from 'typeorm'
+import { Connection, Repository } from 'typeorm'
 import { Application } from 'express'
 import request from 'supertest'
 import { hash } from 'bcrypt'
@@ -10,7 +10,7 @@ import { hash } from 'bcrypt'
 const sut = new ApiServer()
 let app: Application
 let dbConnection: Connection
-let accountRepository: MongoRepository<AccountTypeormEntity>
+let accountRepository: Repository<AccountTypeormEntity>
 
 describe('Login Routes', () => {
   beforeAll(async () => {
@@ -24,8 +24,8 @@ describe('Login Routes', () => {
   })
 
   beforeEach(async () => {
-    accountRepository = dbConnection.getMongoRepository(AccountTypeormEntity)
-    await accountRepository.deleteMany({})
+    accountRepository = dbConnection.getRepository(AccountTypeormEntity)
+    await accountRepository.delete({})
   })
 
   describe('POST /signup', () => {
@@ -50,10 +50,11 @@ describe('Login Routes', () => {
     test('Should return 200 on login', async () => {
       const addAccountParams = mockAddAccountParams()
       const hashedPassword = await hash(addAccountParams.password, 12)
-      await accountRepository.insertOne({
+      const fakeAccount = accountRepository.create({
         ...addAccountParams,
         password: hashedPassword
       })
+      await accountRepository.save(fakeAccount)
       await request(app)
         .post('/api/login')
         .send({

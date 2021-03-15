@@ -1,13 +1,23 @@
-import { ConnectionOptions } from 'typeorm'
+import { ormConfig } from '@/main/config/typeorm'
+import { createConnection, getConnection } from 'typeorm'
 
-export const ormConfig: ConnectionOptions = {
-  type: 'mongodb',
-  url: process.env.MONGO_URL,
-  useUnifiedTopology: true,
-  useNewUrlParser: true,
-  synchronize: true,
-  logging: true,
-  entities: [
-    './src/infra/db/typeorm/entities/*.ts'
-  ]
+export const ormConnection = {
+  async create () {
+    await createConnection(await ormConfig())
+  },
+
+  async close () {
+    await getConnection().close()
+  },
+
+  async clear () {
+    const connection = getConnection()
+    const entities = connection.entityMetadatas
+
+    const entityDeletionPromises = entities.map((entity) => async () => {
+      const repository = connection.getRepository(entity.name)
+      await repository.query(`DELETE FROM ${entity.tableName}`)
+    })
+    await Promise.all(entityDeletionPromises)
+  }
 }

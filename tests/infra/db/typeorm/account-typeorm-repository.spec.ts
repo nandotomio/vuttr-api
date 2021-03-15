@@ -1,30 +1,29 @@
-import { ormConfig } from './helpers'
+import { ormConnection } from './helpers'
 import { AccountTypeormRepository, AccountTypeormEntity } from '@/infra/db'
 import { mockAddAccountParams } from '@/tests/domain/mocks'
 import { EmailInUseError } from '@/domain/errors'
 
-import { Connection, createConnection, MongoRepository } from 'typeorm'
+import { Repository, getRepository } from 'typeorm'
 import faker from 'faker'
 
 const makeSut = (): AccountTypeormRepository => {
   return new AccountTypeormRepository()
 }
 
-let dbConnection: Connection
-let accountRepository: MongoRepository<AccountTypeormEntity>
+let accountRepository: Repository<AccountTypeormEntity>
 
 describe('AccountTypeormRepository', () => {
   beforeAll(async () => {
-    dbConnection = await createConnection(ormConfig)
+    await ormConnection.create()
   })
 
   afterAll(async () => {
-    await dbConnection.close()
+    await ormConnection.close()
   })
 
   beforeEach(async () => {
-    accountRepository = dbConnection.getMongoRepository(AccountTypeormEntity)
-    await accountRepository.deleteMany({})
+    accountRepository = getRepository(AccountTypeormEntity)
+    await ormConnection.clear()
   })
 
   describe('add()', () => {
@@ -48,7 +47,8 @@ describe('AccountTypeormRepository', () => {
     test('Should throw EmailInUseError if email already in use', async () => {
       const sut = makeSut()
       const addAccountParams = mockAddAccountParams()
-      await accountRepository.insertOne(addAccountParams)
+      const fakeAccount = accountRepository.create(addAccountParams)
+      await accountRepository.save(fakeAccount)
       const promise = sut.checkByEmail(addAccountParams.email)
       await expect(promise).rejects.toThrow(EmailInUseError)
     })
@@ -65,7 +65,8 @@ describe('AccountTypeormRepository', () => {
     test('Should return an account on success', async () => {
       const sut = makeSut()
       const addAccountParams = mockAddAccountParams()
-      await accountRepository.insertOne(addAccountParams)
+      const fakeAccount = accountRepository.create(addAccountParams)
+      await accountRepository.save(fakeAccount)
       const account = await sut.loadByEmail(addAccountParams.email)
       expect(account).toBeTruthy()
       expect(account.id).toBeTruthy()
@@ -83,8 +84,8 @@ describe('AccountTypeormRepository', () => {
   describe('updateAccessToken()', () => {
     test('Should update the account accessToken on success', async () => {
       const sut = makeSut()
-      const res = await accountRepository.insertOne(mockAddAccountParams())
-      const fakeAccount = res.ops[0]
+      const fakeAccount = accountRepository.create(mockAddAccountParams())
+      await accountRepository.save(fakeAccount)
       expect(fakeAccount.accessToken).toBeFalsy()
       const accessToken = faker.random.uuid()
       await sut.updateAccessToken(fakeAccount.id, accessToken)

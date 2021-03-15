@@ -1,11 +1,11 @@
 import { AddAccount } from '@/domain/usecases'
 
-import { Entity, ObjectID, ObjectIdColumn, Column, UpdateDateColumn, CreateDateColumn } from 'typeorm'
+import { Entity, PrimaryGeneratedColumn, Column, UpdateDateColumn, CreateDateColumn } from 'typeorm'
 
 @Entity('accounts')
 export class AccountTypeormEntity implements AddAccount.Params {
-  @ObjectIdColumn()
-  id: ObjectID
+  @PrimaryGeneratedColumn('uuid')
+  id: string
 
   @Column()
   email: string
