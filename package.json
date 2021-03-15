@@ -1,6 +1,6 @@
 {
   "name": "vuttr-api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "VUTTR (Very Useful Tools to Remember) - NodeJs Rest API and GraphQL using TDD, Clean Architecture, Typescript and Design Patterns",
   "author": "Fernando Tomio",
   "license": "MIT",
