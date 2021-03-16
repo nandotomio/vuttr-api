@@ -1,6 +1,6 @@
 import { AddToolController } from '@/presentation/controllers'
 import { MissingParamError, ServerError } from '@/presentation/errors'
-import { badRequest, forbidden, serverError } from '@/presentation/helpers'
+import { badRequest, created, forbidden, serverError } from '@/presentation/helpers'
 import { ValidationSpy, AddToolSpy } from '@/tests/presentation/mocks'
 import { mockAddToolParams, throwError } from '@/tests/domain/mocks'
 import { ToolAlreadyExistsError } from '@/domain/errors'
@@ -74,5 +74,11 @@ describe('AddTool Controller', () => {
     validationSpy.error = new MissingParamError(faker.random.word())
     await sut.handle(mockRequest())
     expect(addToolSpy.callsCount).toBe(0)
+  })
+
+  test('Should return 201 if valid data is provided', async () => {
+    const { sut, addToolSpy } = makeSut()
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(created(addToolSpy.result))
   })
 })
