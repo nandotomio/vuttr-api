@@ -27,6 +27,12 @@ export class ToolTypeormRepository implements AddToolRepository {
     })
 
     await this.toolRepository.save(tool)
-    return Promise.resolve(null)
+    return {
+      id: tool.id,
+      title: tool.title,
+      link: tool.link,
+      description: tool.description,
+      tags: tool.tags.map(tag => tag.name)
+    }
   }
 }
