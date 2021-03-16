@@ -9,7 +9,7 @@ export class DbAddTool implements AddTool {
 
   async add (data: AddTool.Params): Promise<AddTool.Result> {
     await this.checkToolByTitleRepository.checkByTitle(data.title)
-    await this.addToolRepository.add(data)
-    return Promise.resolve(null)
+    const tool = await this.addToolRepository.add(data)
+    return tool
   }
 }
