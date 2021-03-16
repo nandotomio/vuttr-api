@@ -60,4 +60,10 @@ describe('DbAddTool Usecase', () => {
     await expect(promise).rejects.toThrow()
     expect(addToolRepositorySpy.callsCount).toBe(0)
   })
+
+  test('Should return a tool on success', async () => {
+    const { sut, addToolRepositorySpy } = makeSut()
+    const tool = await sut.add(mockAddToolParams())
+    expect(tool).toEqual(addToolRepositorySpy.result)
+  })
 })
