@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden } from '@/presentation/helpers'
+import { badRequest, forbidden, serverError } from '@/presentation/helpers'
 import { AddTool } from '@/domain/usecases'
 import { ToolAlreadyExistsError } from '@/domain/errors'
 
@@ -21,6 +21,7 @@ export class AddToolController implements Controller {
       if (error instanceof ToolAlreadyExistsError) {
         return forbidden(error)
       }
+      return serverError(error)
     }
   }
 }
