@@ -1,9 +1,10 @@
-import { AddToolRepository } from '@/data/protocols/db'
 import { ToolTypeormEntity, TagTypeormEntity } from '@/infra/db'
+import { AddToolRepository, CheckToolByTitleRepository } from '@/data/protocols/db'
+import { ToolAlreadyExistsError } from '@/domain/errors'
 
 import { getRepository } from 'typeorm'
 
-export class ToolTypeormRepository implements AddToolRepository {
+export class ToolTypeormRepository implements AddToolRepository, CheckToolByTitleRepository {
   constructor (
     private readonly toolRepository = getRepository(ToolTypeormEntity),
     private readonly tagRepository = getRepository(TagTypeormEntity)
@@ -34,5 +35,13 @@ export class ToolTypeormRepository implements AddToolRepository {
       description: tool.description,
       tags: tool.tags.map(tag => tag.name)
     }
+  }
+
+  async checkByTitle (title: string): Promise<void> {
+    const exists = await this.toolRepository.findOne({ where: { title } })
+    if (exists) {
+      throw new ToolAlreadyExistsError()
+    }
+    return Promise.resolve(null)
   }
 }
