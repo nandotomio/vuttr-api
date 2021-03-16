@@ -1,9 +1,11 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
 import { badRequest } from '@/presentation/helpers'
+import { AddTool } from '@/domain/usecases'
 
 export class AddToolController implements Controller {
   constructor (
-    private readonly validation: Validation
+    private readonly validation: Validation,
+    private readonly addTool: AddTool
   ) {}
 
   async handle (request: AddToolController.Request): Promise<HttpResponse> {
@@ -11,6 +13,7 @@ export class AddToolController implements Controller {
     if (error) {
       return badRequest(error)
     }
+    await this.addTool.add(request)
     return Promise.resolve(null)
   }
 }
