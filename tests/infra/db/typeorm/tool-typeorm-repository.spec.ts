@@ -72,5 +72,12 @@ describe('ToolTypeormRepository', () => {
       const promise = sut.checkByTitle(addToolParams.title)
       await expect(promise).rejects.toThrow(ToolAlreadyExistsError)
     })
+
+    test('Should resolve if title is valid', async () => {
+      const sut = makeSut()
+      const addAccountParams = mockAddToolParams()
+      const promise = sut.checkByTitle(addAccountParams.title)
+      await expect(promise).resolves.toBeUndefined()
+    })
   })
 })
