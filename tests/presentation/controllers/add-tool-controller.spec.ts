@@ -1,8 +1,8 @@
 import { AddToolController } from '@/presentation/controllers'
-import { MissingParamError } from '@/presentation/errors'
-import { badRequest, forbidden } from '@/presentation/helpers'
+import { MissingParamError, ServerError } from '@/presentation/errors'
+import { badRequest, forbidden, serverError } from '@/presentation/helpers'
 import { ValidationSpy, AddToolSpy } from '@/tests/presentation/mocks'
-import { mockAddToolParams } from '@/tests/domain/mocks'
+import { mockAddToolParams, throwError } from '@/tests/domain/mocks'
 import { ToolAlreadyExistsError } from '@/domain/errors'
 
 import faker from 'faker'
@@ -60,5 +60,12 @@ describe('AddTool Controller', () => {
     jest.spyOn(addToolSpy, 'add').mockRejectedValueOnce(new ToolAlreadyExistsError())
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(forbidden(new ToolAlreadyExistsError()))
+  })
+
+  test('Should return 500 if AddTool throws', async () => {
+    const { sut, addToolSpy } = makeSut()
+    jest.spyOn(addToolSpy, 'add').mockImplementationOnce(throwError)
+    const httpResponse = await sut.handle(mockRequest())
+    expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
 })
