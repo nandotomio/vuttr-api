@@ -1,4 +1,4 @@
-import { AddToolRepository } from '@/data/protocols'
+import { AddToolRepository, CheckToolByTitleRepository } from '@/data/protocols'
 import { mockAddToolParams } from '@/tests/domain/mocks'
 
 import faker from 'faker'
@@ -15,5 +15,13 @@ export class AddToolRepositorySpy implements AddToolRepository {
   async add (params: AddToolRepository.Params): Promise<AddToolRepository.Result> {
     this.params = params
     return this.result
+  }
+}
+
+export class CheckToolByTitleRepositorySpy implements CheckToolByTitleRepository {
+  title: string
+
+  async checkByTitle (title: string): Promise<void> {
+    this.title = title
   }
 }
