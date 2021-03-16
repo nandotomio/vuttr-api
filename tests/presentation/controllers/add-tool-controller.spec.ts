@@ -68,4 +68,11 @@ describe('AddTool Controller', () => {
     const httpResponse = await sut.handle(mockRequest())
     expect(httpResponse).toEqual(serverError(new ServerError(null)))
   })
+
+  test('Should not call AddTool if Validation fails', async () => {
+    const { sut, validationSpy, addToolSpy } = makeSut()
+    validationSpy.error = new MissingParamError(faker.random.word())
+    await sut.handle(mockRequest())
+    expect(addToolSpy.callsCount).toBe(0)
+  })
 })
