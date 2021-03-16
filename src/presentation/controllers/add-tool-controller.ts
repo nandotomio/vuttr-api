@@ -1,6 +1,7 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest } from '@/presentation/helpers'
+import { badRequest, forbidden } from '@/presentation/helpers'
 import { AddTool } from '@/domain/usecases'
+import { ToolAlreadyExistsError } from '@/domain/errors'
 
 export class AddToolController implements Controller {
   constructor (
@@ -9,12 +10,18 @@ export class AddToolController implements Controller {
   ) {}
 
   async handle (request: AddToolController.Request): Promise<HttpResponse> {
-    const error = this.validation.validate(request)
-    if (error) {
-      return badRequest(error)
+    try {
+      const error = this.validation.validate(request)
+      if (error) {
+        return badRequest(error)
+      }
+      await this.addTool.add(request)
+      return Promise.resolve(null)
+    } catch (error) {
+      if (error instanceof ToolAlreadyExistsError) {
+        return forbidden(error)
+      }
     }
-    await this.addTool.add(request)
-    return Promise.resolve(null)
   }
 }
 
