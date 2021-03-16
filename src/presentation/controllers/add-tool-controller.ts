@@ -1,5 +1,5 @@
 import { Controller, HttpResponse, Validation } from '@/presentation/protocols'
-import { badRequest, forbidden, serverError } from '@/presentation/helpers'
+import { badRequest, created, forbidden, serverError } from '@/presentation/helpers'
 import { AddTool } from '@/domain/usecases'
 import { ToolAlreadyExistsError } from '@/domain/errors'
 
@@ -15,8 +15,8 @@ export class AddToolController implements Controller {
       if (error) {
         return badRequest(error)
       }
-      await this.addTool.add(request)
-      return Promise.resolve(null)
+      const tool = await this.addTool.add(request)
+      return created(tool)
     } catch (error) {
       if (error instanceof ToolAlreadyExistsError) {
         return forbidden(error)
