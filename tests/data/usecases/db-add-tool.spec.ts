@@ -52,4 +52,12 @@ describe('DbAddTool Usecase', () => {
     const promise = sut.add(mockAddToolParams())
     await expect(promise).rejects.toThrow()
   })
+
+  test('Should not call AddToolRepository if CheckToolByTitleRepository fails', async () => {
+    const { sut, checkToolByTitleRepositorySpy, addToolRepositorySpy } = makeSut()
+    jest.spyOn(checkToolByTitleRepositorySpy, 'checkByTitle').mockImplementationOnce(throwError)
+    const promise = sut.add(mockAddToolParams())
+    await expect(promise).rejects.toThrow()
+    expect(addToolRepositorySpy.callsCount).toBe(0)
+  })
 })
