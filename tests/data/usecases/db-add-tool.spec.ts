@@ -1,5 +1,5 @@
 import { DbAddTool } from '@/data/usecases'
-import { mockAddToolParams } from '@/tests/domain/mocks'
+import { mockAddToolParams, throwError } from '@/tests/domain/mocks'
 import { AddToolRepositorySpy } from '@/tests/data/mocks'
 
 type SutTypes = {
@@ -27,5 +27,12 @@ describe('DbAddTool Usecase', () => {
       description: addToolParams.description,
       tags: addToolParams.tags
     })
+  })
+
+  test('Should throw if AddToolRepository throws', async () => {
+    const { sut, addToolRepositorySpy } = makeSut()
+    jest.spyOn(addToolRepositorySpy, 'add').mockImplementationOnce(throwError)
+    const promise = sut.add(mockAddToolParams())
+    await expect(promise).rejects.toThrow()
   })
 })
