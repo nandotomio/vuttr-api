@@ -7,12 +7,12 @@ module.exports = async () => {
     shell.exit(1)
   }
 
+  // This ensures that the provisioned test containers will:
+  // - shut down at the end and during the tests, if a forced exit occurs
+  // - not shut down if tests are running in watch mode
   onExit(function () {
     shell.echo('Shuting down database... 🔌')
     shell.exec('npm run test:down')
-
-    shell.echo('Removing test volume... 🛠️')
-    shell.exec('docker volume rm -f vuttr-api_db_postgresql_data_test')
 
     shell.echo('Tests finished...🏁')
 
