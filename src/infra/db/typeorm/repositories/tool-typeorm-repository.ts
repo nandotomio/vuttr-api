@@ -42,6 +42,5 @@ export class ToolTypeormRepository implements AddToolRepository, CheckToolByTitl
     if (exists) {
       throw new ToolAlreadyExistsError()
     }
-    return Promise.resolve(null)
   }
 }
