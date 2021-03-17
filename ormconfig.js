@@ -8,7 +8,7 @@ const ormConfig = (dir = 'dist') => ({
   synchronize: false,
   migrationsRun: true,
   entities: [
-    `./${dir}/infra/db/typeorm/entities/*.{js,ts}`
+    `./${dir}/infra/db/typeorm/entities/index.{js,ts}`
   ],
   migrations: [`./${dir}/infra/db/typeorm/migrations/*.{js,ts}`],
   cli: {

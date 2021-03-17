@@ -25,3 +25,8 @@ export const unauthorized = (): HttpResponse => ({
   statusCode: 401,
   body: new UnauthorizedError()
 })
+
+export const created = (data: any): HttpResponse => ({
+  statusCode: 201,
+  body: data
+})
