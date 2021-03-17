@@ -8,9 +8,7 @@ export class AddToolRepositorySpy implements AddToolRepository {
   params: AddToolRepository.Params
   result: AddToolRepository.Result = {
     ...mockAddToolParams(),
-    id: faker.random.uuid(),
-    createdAt: faker.date.recent(),
-    updatedAt: faker.date.recent()
+    id: faker.random.uuid()
   }
 
   async add (params: AddToolRepository.Params): Promise<AddToolRepository.Result> {
