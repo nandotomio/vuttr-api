@@ -17,16 +17,17 @@ export class ToolTypeormEntity {
   description: string
 
   @ManyToMany(() => TagTypeormEntity, {
-    eager: true,
-    cascade: true
+    eager: true
   })
   @JoinTable({
     name: 'tool_tags',
     joinColumn: {
-      name: 'tool_id'
+      name: 'tool_id',
+      referencedColumnName: 'id'
     },
     inverseJoinColumn: {
-      name: 'tag_id'
+      name: 'tag_id',
+      referencedColumnName: 'id'
     }
   })
   tags: TagTypeormEntity[]
