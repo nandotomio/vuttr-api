@@ -24,6 +24,12 @@ services:
     image: node:14
     working_dir: /usr/src/vuttr-api
     restart: unless-stopped
+    environment:
+      - NODE_ENV=development
+      - API_PORT=3000
+      - API_URL=http://localhost:3000
+      - JWT_SECRET=4356h4636563h665565hhtfhfrg
+      - DATABASE_URL=postgres://postgres:postgres@db-postgresql-dev:5432/vuttr-dev
     depends_on:
       - db-postgresql-dev
     command: bash -c "npm install --only=prod && npm run debug"
@@ -35,7 +41,7 @@ services:
     networks:
       - api-connect
     ports:
-      - ${API_PORT}:${API_PORT}
+      - 3000:3000
       - 9222:9222
 
 volumes:
